@@ -14,13 +14,13 @@ class SpecData {
     var it_counter: Int;
     var xit_counter: Int;
     var positive_it_counter: Int;
-    var time_taken: [Int64];
+    var time_taken: [Double];
 
     init() {
         self.it_counter = 0;
         self.xit_counter = 0;
         self.positive_it_counter = 0;
-        self.time_taken = [Int64]();
+        self.time_taken = [Double]();
     }
 
     func display() {
@@ -31,13 +31,13 @@ class SpecData {
 
         let formatted_time = self.time_taken.reduce(0, +);
         if formatted_time > 1000 {
-            print("★ Finished in \(Float(formatted_time)/1000) seconds".cyan());
+            print("★ Finished in \(String(format: "%.5f", formatted_time/1000.0)) seconds".cyan());
         }
         else if formatted_time > 60000 {
-            print("★ Finished in \(Float(formatted_time)/60000) minutes".cyan());
+            print("★ Finished in \(String(format: "%.5f", formatted_time/60000.0)) minutes".cyan());
         }
         else {
-            print("★ Finished in \(formatted_time) ms".cyan());
+            print("★ Finished in \(String(format: "%.5f", formatted_time)) ms".cyan());
         }
     }
 
@@ -112,7 +112,7 @@ class SpecModule {
         it();
         let total_time = DateInterval(start: start_time, end: Date());
 
-        self.module_data.time_taken.append(Int64(total_time.duration * 1000.0));
+        self.module_data.time_taken.append(total_time.duration * 1000.0);
         self.module_data.it_counter += 1;
 
         if self.it_state {
