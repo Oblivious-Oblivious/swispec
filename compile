@@ -1,0 +1,12 @@
+#!/bin/sh
+
+touch SwiSpec.swift
+
+for value in `ls src/`;
+do
+    cat src/$value >> SwiSpec.swift
+done
+
+rm -rf export
+mkdir export
+mv SwiSpec.swift export/
