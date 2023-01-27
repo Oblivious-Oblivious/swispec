@@ -145,96 +145,51 @@ class SpecModule {
         self.spacing.removeLast(4);
     }
 
-    func `is`(_ expected: Any?) {
-        if not_equals(self.actual, expected) {
+    func generic_match(_ matched: Bool, _ error_message: () -> String) {
+        if !matched {
             self.it_state = false;
             self.spacing += "    ";
             self.failed_it_result += "\(self.spacing)\(self.current_file):\(self.current_line):\n";
             self.spacing += "    ";
-            self.failed_it_result += (self.spacing + "|> " + "`\(self.actual!)`".red() + " should be `\(expected!)`\n");
+            self.failed_it_result += self.spacing + "|> " + error_message() + "\n";
             self.spacing.removeLast(8);
         }
+    }
+
+    func `is`(_ expected: Any?) {
+        generic_match(equals(self.actual, expected), { "`\(self.actual!)`".red() + " should be `\(expected!)`" });
     }
 
     func isnot(_ expected: Any?) {
-        if equals(self.actual, expected) {
-            self.it_state = false;
-            self.spacing += "    ";
-            self.failed_it_result += "\(self.spacing)\(self.current_file):\(self.current_line):\n";
-            self.spacing += "    ";
-            self.failed_it_result += (self.spacing + "|> " + "`\(self.actual!)`".red() + " should not be `\(expected!)`\n");
-            self.spacing.removeLast(8);
-        }
+        generic_match(not_equals(self.actual, expected), { "`\(self.actual!)`".red() + " should not be `\(expected!)`" });
     }
 
     func equals_to(_ expected: Any?) {
-        if not_equals(self.actual, expected) {
-            self.it_state = false;
-            self.spacing += "    ";
-            self.failed_it_result += "\(self.spacing)\(self.current_file):\(self.current_line):\n";
-            self.spacing += "    ";
-            self.failed_it_result += (self.spacing + "|> " + "`\(expected!)` expected but got " + "`\(self.actual!)`".red() + "\n");
-            self.spacing.removeLast(8);
-        }
+        generic_match(equals(self.actual, expected), { "`\(expected!)` expected but got " + "`\(self.actual!)`".red() });
     }
 
     func does_not_equal_to(_ expected: Any?) {
-        if equals(self.actual, expected) {
-            self.it_state = false;
-            self.spacing += "    ";
-            self.failed_it_result += "\(self.spacing)\(self.current_file):\(self.current_line):\n";
-            self.spacing += "    ";
-            self.failed_it_result += (self.spacing + "|> `\(expected!)` must be different from " + "`\(self.actual!)`".red() + "\n");
-            self.spacing.removeLast(8);
-        }
+        generic_match(not_equals(self.actual, expected), { "`\(expected!)` must be different from " + "`\(self.actual!)`".red() });
     }
 
     func is_true() {
         let actual_to_bool = "\(self.actual!)";
-        if(actual_to_bool == "false") {
-            self.it_state = false;
-            self.spacing += "    ";
-            self.failed_it_result += "\(self.spacing)\(self.current_file):\(self.current_line):\n";
-            self.spacing += "    ";
-            self.failed_it_result += (self.spacing + "|> " + "`\(actual_to_bool)`".red() + " should be true" + "\n");
-            self.spacing.removeLast(8);
-        }
+        generic_match(actual_to_bool == "true", { "`\(actual_to_bool)`".red() + " should be true" });
     }
 
     func is_false() {
         let actual_to_bool = "\(self.actual!)";
-        if(actual_to_bool == "true") {
-            self.it_state = false;
-            self.spacing += "    ";
-            self.failed_it_result += "\(self.spacing)\(self.current_file):\(self.current_line):\n";
-            self.spacing += "    ";
-            self.failed_it_result += (self.spacing + "|> " + "`\(actual_to_bool)`".red() + " should be false" + "\n");
-            self.spacing.removeLast(8);
-        }
+        generic_match(actual_to_bool == "false", { "`\(actual_to_bool)`".red() + " should be false" });
     }
 
     func is_nil() {
         let actual_to_nil = String(describing: self.actual);
-        if(actual_to_nil != "nil") {
-            self.it_state = false;
-            self.spacing += "    ";
-            self.failed_it_result += "\(self.spacing)\(self.current_file):\(self.current_line):\n";
-            self.spacing += "    ";
-            self.failed_it_result += (self.spacing + "|> " + "`\(self.actual!)`".red() + " should be nil" + "\n");
-            self.spacing.removeLast(8);
-        }
+        generic_match(actual_to_nil == "nil", { "`\(self.actual!)`".red() + " should be nil" });
     }
 
     func isnot_nil() {
         let actual_to_nil = String(describing: self.actual);
-        if(actual_to_nil == "nil") {
-            self.it_state = false;
-            self.spacing += "    ";
-            self.failed_it_result += "\(self.spacing)\(self.current_file):\(self.current_line):\n";
-            self.spacing += "    ";
-            self.failed_it_result += (self.spacing + "|> " + "`\(actual_to_nil)`".red() + " should not be nil" + "\n");
-            self.spacing.removeLast(8);
-        }
+        generic_match(actual_to_nil != "nil", { ("`\(actual_to_nil)`".red() + " should not be nil") });
     }
 
     func assert_that(_ actual: Any?, file: String = #file, line: Int = #line) -> SpecModule {
