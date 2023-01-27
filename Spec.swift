@@ -62,16 +62,16 @@ class SpecModule {
     var module_data = SpecData();
     var before_each_block: () -> Void = {};
     var after_each_block: () -> Void = {};
-    var actual: Any? = 0;
+    var actual: Any? = nil;
 
     func spec_code() {}
 
-    func equals(_ actual : Any, _ expected : Any) -> Bool {
+    func equals(_ actual : Any?, _ expected : Any?) -> Bool {
         guard actual is AnyHashable else { return false };
         guard expected is AnyHashable else { return false };
         return (actual as! AnyHashable) == (expected as! AnyHashable);
     }
-    func not_equals(_ actual : Any, _ expected : Any) -> Bool {
+    func not_equals(_ actual : Any?, _ expected : Any?) -> Bool {
         return !equals(actual, expected);
     }
 
@@ -190,31 +190,31 @@ class SpecModule {
     }
 
     func is_true() {
-        let actual_to_bool = "\(actual!)";
+        let actual_to_bool = "\(self.actual!)";
         if(actual_to_bool == "false") {
             self.it_state = false;
             self.spacing += "    ";
             self.failed_it_result += "\(self.spacing)\(self.current_file):\(self.current_line):\n";
             self.spacing += "    ";
-            self.failed_it_result += (self.spacing + "|> " + "`\(self.actual!)`".red() + " should be true" + "\n");
+            self.failed_it_result += (self.spacing + "|> " + "`\(actual_to_bool)`".red() + " should be true" + "\n");
             self.spacing.removeLast(8);
         }
     }
 
     func is_false() {
-        let actual_to_bool = "\(actual!)";
+        let actual_to_bool = "\(self.actual!)";
         if(actual_to_bool == "true") {
             self.it_state = false;
             self.spacing += "    ";
             self.failed_it_result += "\(self.spacing)\(self.current_file):\(self.current_line):\n";
             self.spacing += "    ";
-            self.failed_it_result += (self.spacing + "|> " + "`\(self.actual!)`".red() + " should be false" + "\n");
+            self.failed_it_result += (self.spacing + "|> " + "`\(actual_to_bool)`".red() + " should be false" + "\n");
             self.spacing.removeLast(8);
         }
     }
 
     func is_nil() {
-        let actual_to_nil = "\(actual)";
+        let actual_to_nil = String(describing: self.actual);
         if(actual_to_nil != "nil") {
             self.it_state = false;
             self.spacing += "    ";
@@ -226,13 +226,13 @@ class SpecModule {
     }
 
     func isnot_nil() {
-        let actual_to_nil = "\(actual)";
+        let actual_to_nil = String(describing: self.actual);
         if(actual_to_nil == "nil") {
             self.it_state = false;
             self.spacing += "    ";
             self.failed_it_result += "\(self.spacing)\(self.current_file):\(self.current_line):\n";
             self.spacing += "    ";
-            self.failed_it_result += (self.spacing + "|> " + "`\(self.actual)`".red() + " should not be nil" + "\n");
+            self.failed_it_result += (self.spacing + "|> " + "`\(actual_to_nil)`".red() + " should not be nil" + "\n");
             self.spacing.removeLast(8);
         }
     }
