@@ -3,7 +3,7 @@ import Cocoa;
 @main
 class testrunner {
     static func main() {
-        var s = Spec([
+        let s = Spec([
             cDataLib(),
             second(),
         ]);
