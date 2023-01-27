@@ -1,0 +1,17 @@
+#!/bin/sh
+
+cd prime_factors
+make
+make clean
+cd ..
+
+cd simple
+make
+make clean
+cd ..
+
+cd stack
+make
+make clean
+cd ..
+
