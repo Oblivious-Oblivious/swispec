@@ -1,4 +1,4 @@
-import Cocoa;
+import Foundation;
 
 extension String {
     func red() -> String { return "\u{001B}[1;31m\(self)\u{001B}[0m"; }

@@ -1,4 +1,4 @@
-import Cocoa;
+import Foundation;
 
 class Spec {
     var modules: [SpecModule];
@@ -21,7 +21,7 @@ class Spec {
         data.display();
     }
 }
-import Cocoa;
+import Foundation;
 
 class SpecData {
     var it_counter: Int;
@@ -61,7 +61,7 @@ class SpecData {
         self.time_taken += data.time_taken;
     }
 }
-import Cocoa;
+import Foundation;
 
 class SpecModule {
     var spacing = "";
@@ -235,7 +235,7 @@ class SpecModule {
         return self.module_data;
     }
 }
-import Cocoa;
+import Foundation;
 
 extension String {
     func red() -> String { return "\u{001B}[1;31m\(self)\u{001B}[0m"; }
