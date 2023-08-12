@@ -1,3 +1,3 @@
 # swispec
 
-BDD in Swift, inspired from Rspec
+BDD in Swift, inspired by Rspec
